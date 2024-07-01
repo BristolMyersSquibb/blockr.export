@@ -1,0 +1,18 @@
+Package: blockr.export
+Title: Export 'blockr' Workspaces to Documents
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "John",
+             family = "Coene",
+             role = c("cre", "aut"),
+             email = "john@opifex.org"),
+      person(family = "Bristol Myers Squibb",
+           role = c("cph", "fnd"))
+    )
+Description: Export 'blockr' workspaces to 'Rmarkdown' or markdown.
+License: GPL (>= 2)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1.9000
+Imports:
+  blockr
