@@ -1,4 +1,6 @@
-#' Export a Markdown file
+#' Export to Markdown
+#'
+#' Export a workspace to markdown.
 #'
 #' @param workspace The workspace to export
 #' @param chunks Whether code chunks represent entire stacks or individual blocks.

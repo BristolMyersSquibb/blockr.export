@@ -1,4 +1,6 @@
-#' Export a RMarkdown file
+#' Export to RMarkdown
+#'
+#' Export a workspace to Rmarkdown.
 #'
 #' @param workspace The workspace to export
 #' @param chunks Whether code chunks represent entire stacks or individual blocks.
