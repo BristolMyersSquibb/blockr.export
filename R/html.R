@@ -40,7 +40,8 @@ write_html <- function(content, file) {
     rmarkdown::render(
       temp_file,
       file
-    )
+    ),
+    error = \(e) e
   )
 
   if (inherits(success, "error"))

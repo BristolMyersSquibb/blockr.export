@@ -2,7 +2,7 @@
 % Please edit documentation in R/rmarkdown.R
 \name{export_rmarkdown}
 \alias{export_rmarkdown}
-\title{Export a RMarkdown file}
+\title{Export to RMarkdown}
 \usage{
 export_rmarkdown(
   file,
@@ -18,5 +18,5 @@ export_rmarkdown(
 \item{workspace}{The workspace to export}
 }
 \description{
-Export a RMarkdown file
+Export a workspace to Rmarkdown.
 }

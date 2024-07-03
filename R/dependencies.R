@@ -167,7 +167,7 @@ find_block_desc <- function(block) {
 }
 
 get_package_deps <- function(package) {
-  pkgs <- installed.packages() |>
+  pkgs <- utils::installed.packages() |>
     as.data.frame()
 
   package_entry <- pkgs[pkgs$Package == package, ]

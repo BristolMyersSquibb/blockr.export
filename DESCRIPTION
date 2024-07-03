@@ -17,4 +17,5 @@ RoxygenNote: 7.3.1.9000
 Imports:
   blockr
 Suggests:
+  stringr,
   rmarkdown
