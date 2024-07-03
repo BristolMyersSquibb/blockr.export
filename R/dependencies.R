@@ -43,6 +43,8 @@ get_block_dependencies <- function(
   find_functions(fns, core_package, ext_packages)
 }
 
+# recursively go through expressions and functions bodies
+# to retrieve any dependencies required to run them
 find_functions <- function(
   fns,
   core_package,
@@ -104,7 +106,9 @@ find_functions <- function(
   )
 }
 
-# finds packages our code depneds on
+# finds packages our code depends on
+# scans dependencies (`package`) for any `fns`
+# returns package names where `fns` found
 find_packages <- function(fns, packages = c()) {
   if(!length(packages))
     return()
