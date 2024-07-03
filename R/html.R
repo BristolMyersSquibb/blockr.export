@@ -6,7 +6,7 @@
 #' @param chunks Whether code chunks represent entire stacks or individual blocks.
 #' @param file The file to export to
 #' @export
-export_markdown <- function(
+export_html <- function(
   file,
   chunks = c("stack", "block"),
   workspace = blockr::get_workspace()

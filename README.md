@@ -14,6 +14,12 @@ You can install the development version of blockr.export from [GitHub](https://g
 remotes::install_github("blockr-org/blockr.export")
 ```
 
+## Exports
+
+- Rmarkdown
+- Markdown
+- HTML
+
 ## Example
 
 ``` r
