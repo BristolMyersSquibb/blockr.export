@@ -19,6 +19,7 @@ make_stack <- function(workspace){
 
         deps <- get_block_dependencies(block, code)
 
+        print(deps)
         list(
           code = code,
           deps = deps
@@ -36,17 +37,49 @@ make_stack <- function(workspace){
 
       list(
         content = paste0("## ", title, "\n\n", code),
-        deps = blocks$deps
+        internals = lapply(blocks, \(block) block$deps$internals),
+        packages = lapply(blocks, \(block) block$deps$packages)
       )
     })
 
   content <- sapply(stacks, \(stack) stack$content)
   content <- paste0(content, collapse = "\n")
 
-  deps <- sapply(stacks, \(stack) stack$deps)
-  print(deps)
+  internals <- lapply(stacks, \(stack) stack$internals)
+  imports <- lapply(stacks, \(stack) stack$packages)
 
-  return(content)
+  content |>
+    add_dependencies(internals, imports)
+}
+
+# adds dependencies to a file.
+add_dependencies <- function(content, internals, packages) {
+  internals <- unlist(internals)
+  internals <- paste0(internals, collapse = "\n")
+
+  packages <- unlist(packages)
+  packages <- packages[packages != ""]
+
+  library <- ""
+  for(package in packages) {
+    library <- paste0(
+      library,
+      "\n",
+      "libary(",
+      package,
+      ")"
+    )
+  }
+
+  paste0(
+    "```{r packages}\n",
+    library,
+    "\n```\n\n",
+    "```{r internals}\n",
+    internals,
+    "\n```\n\n",
+    content
+  )
 }
 
 make_block <- function(workspace){

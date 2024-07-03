@@ -34,7 +34,7 @@ get_block_dependencies <- function(
   if(!length(core_package))
     return()
 
-  ext_packages <- tools::package_dependencies(core_package)
+  ext_packages <- get_package_deps(core_package)
 
   # if we find function calls we look them up
   # in the list of dependencies we have found
@@ -113,14 +113,13 @@ find_packages <- function(fns, packages = c()) {
   names(pkg_functions) <- packages
 
   packages <- c()
-  for(i in seq_along(fns)) {
-    for(j in seq_along(pkg_functions)) {
-      exists <- any(fns[i] %in% pkg_functions[[j]])
+  for(i in seq_along(pkg_functions)) {
+    fns_used <- pkg_functions[[i]][fns %in% pkg_functions[[i]]]
 
-      if(exists) {
-        packages <- c(packages, names(pkg_functions)[j])
-      }
-    }
+    if(!length(fns_used))
+      next
+
+    packages <- c(packages, names(pkg_functions)[i])
   }
 
   unique(packages)
@@ -165,4 +164,32 @@ find_block_desc <- function(block) {
   }
 
   return()
+}
+
+get_package_deps <- function(package) {
+  pkgs <- installed.packages() |>
+    as.data.frame()
+
+  package_entry <- pkgs[pkgs$Package == package, ]
+
+  if(!nrow(package_entry))
+    return()
+
+  imports <- clean_package(package_entry$Imports)
+  suggests <- clean_package(package_entry$Suggests)
+  depends <- clean_package(package_entry$Depends)
+
+  packages <- c(imports, suggests, depends) |>
+    unique()
+
+  packages <- packages[!is.na(packages)]
+  packages[packages != ""]
+}
+
+clean_package <- function(function_string) {
+  packages <- strsplit(function_string, ",")[[1]]
+  packages <- gsub("\\n", "", packages)
+  packages <- strsplit(packages, " ") |>
+    sapply(\(pkg) trimws(pkg[[1]]))
+  packages[!"R" %in% packages]
 }
