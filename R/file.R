@@ -19,7 +19,8 @@ make_stack <- function(workspace, to_copy){
 
       blocks <- lapply(stack, \(block) {
         code <- blockr::generate_code(block) |>
-          deparse()
+          deparse() |>
+          remove_to_copy_ns(to_copy)
 
         deps <- get_block_dependencies(block, code, to_copy)
 

@@ -66,7 +66,7 @@ find_functions <- function(
   # filter down to those that match our calls present
   # in the code/expression
   fns <- gsub("^.*::", "", fns)
-  fns2 <- unlist(fns)
+  all_fns <- unlist(fns)
   fns <- pkg_functions[pkg_functions %in% fns]
 
   # call and deparse the functions to obtain source code
@@ -93,13 +93,14 @@ find_functions <- function(
 
   # we force copy functions from to_copy packages
   to_copy_functions <- sapply(to_copy, \(pkg) {
-    pkg_functions <- safe_get_functions(pkg, unexported = FALSE)
+    pkg_functions <- safe_get_functions(pkg, unexported = TRUE)
 
-    fns <- pkg_functions[pkg_functions %in% fns2]
+    fns <- pkg_functions[pkg_functions %in% all_fns]
 
     sapply(seq_along(fns), \(i) {
       # note that we import the source code of all functions
       # within the package that includes the blocks
+      # we use the ::: because we will likely come across unexported functions
       call <- paste0(pkg, ":::", fns[i])
       code <- tryCatch(
         eval(parse(text = call)),
