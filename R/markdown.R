@@ -9,9 +9,10 @@
 export_markdown <- function(
   file,
   chunks = c("stack", "block"),
-  workspace = blockr::get_workspace()
+  workspace = blockr::get_workspace(),
+  to_copy = c()
 ){
-  write_file(file, write_md, chunks, workspace)
+  write_file(file, write_md, chunks, workspace, to_copy)
 }
 
 write_md <- function(content, file) {

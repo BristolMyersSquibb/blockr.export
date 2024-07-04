@@ -5,7 +5,8 @@
 # out code block depends on.
 get_block_dependencies <- function(
   block,
-  code
+  code,
+  to_copy = c()
 ) {
   if (missing(code))
     stop("missing block")
@@ -16,7 +17,7 @@ get_block_dependencies <- function(
   # find function calls within expression
   fns <- stringr::str_extract_all(
     code,
-    "\\w+(?=\\(|$)"
+    "(?<=\\s|^)[^(\\s]+(?=\\()"
   )
 
   # no function calls in the expression
@@ -35,12 +36,13 @@ get_block_dependencies <- function(
     return()
 
   ext_packages <- get_package_deps(core_package)
+  ext_packages <- ext_packages[!ext_packages %in% to_copy]
 
   # if we find function calls we look them up
   # in the list of dependencies we have found
   # if they are found we return the package where it comes from
   # so we can library(<package>) in our code.
-  find_functions(fns, core_package, ext_packages)
+  find_functions(fns, core_package, ext_packages, to_copy = to_copy)
 }
 
 # recursively go through expressions and functions bodies
@@ -49,7 +51,8 @@ find_functions <- function(
   fns,
   core_package,
   ext_packages = list(),
-  stack = list(internals = list(), ext_packages = c())
+  stack = list(internals = list(), ext_packages = c()),
+  to_copy = c()
 ) {
   # find external packages used by any of the function calls
   ext_packages_used <- find_packages(fns, ext_packages)
@@ -62,6 +65,8 @@ find_functions <- function(
 
   # filter down to those that match our calls present
   # in the code/expression
+  fns <- gsub("^.*::", "", fns)
+  fns2 <- unlist(fns)
   fns <- pkg_functions[pkg_functions %in% fns]
 
   # call and deparse the functions to obtain source code
@@ -86,6 +91,38 @@ find_functions <- function(
     paste(fns[i], "<-", code)
   })
 
+  # we force copy functions from to_copy packages
+  to_copy_functions <- sapply(to_copy, \(pkg) {
+    pkg_functions <- safe_get_functions(pkg, unexported = FALSE)
+
+    fns <- pkg_functions[pkg_functions %in% fns2]
+
+    sapply(seq_along(fns), \(i) {
+      # note that we import the source code of all functions
+      # within the package that includes the blocks
+      call <- paste0(pkg, ":::", fns[i])
+      code <- tryCatch(
+        eval(parse(text = call)),
+        error = \(e) e
+      )
+
+      if(inherits(code, "error")){
+        cat("Error generating", fns[i], ":", code$message, "\n")
+        return("")
+      }
+
+      code <- code |>
+        deparse() |>
+        paste0(collapse = "\n")
+
+      paste(fns[i], "<-", code)
+    }) |>
+      unlist()
+  }) |>
+    unlist()
+
+  functions <- c(functions, to_copy_functions)
+
   # add to stack
   stack$internals <- list(stack$internals, functions)
 
@@ -98,7 +135,7 @@ find_functions <- function(
 
   # if we have found function calls we go back to the top
   if(length(fns))
-    return(find_functions(fns, core_package, ext_packages, stack))
+    return(find_functions(fns, core_package, ext_packages, stack, to_copy))
 
   list(
     internal = paste0(unlist(stack$internals), collapse = "\n\n"),

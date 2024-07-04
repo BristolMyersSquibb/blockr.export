@@ -1,13 +1,17 @@
-make_file <- function(chunks = c("stack", "block"), workspace = blockr::get_workspace()){
+make_file <- function(
+  chunks = c("stack", "block"),
+  workspace = blockr::get_workspace(),
+  to_copy = c()
+){
   chunks <- match.arg(chunks)
 
   switch(chunks,
-    stack = make_stack(workspace),
-    block = make_block(workspace)
+    stack = make_stack(workspace, to_copy),
+    block = make_block(workspace, to_copy)
   )
 }
 
-make_stack <- function(workspace){
+make_stack <- function(workspace, to_copy){
   stacks <- workspace |>
     ls() |>
     lapply(\(stack) {
@@ -17,9 +21,8 @@ make_stack <- function(workspace){
         code <- blockr::generate_code(block) |>
           deparse()
 
-        deps <- get_block_dependencies(block, code)
+        deps <- get_block_dependencies(block, code, to_copy)
 
-        print(deps)
         list(
           code = code,
           deps = deps
@@ -37,7 +40,7 @@ make_stack <- function(workspace){
 
       list(
         content = paste0("## ", title, "\n\n", code),
-        internals = lapply(blocks, \(block) block$deps$internals),
+        internals = lapply(blocks, \(block) block$deps$internal),
         packages = lapply(blocks, \(block) block$deps$packages)
       )
     })
@@ -45,7 +48,7 @@ make_stack <- function(workspace){
   content <- sapply(stacks, \(stack) stack$content)
   content <- paste0(content, collapse = "\n")
 
-  internals <- lapply(stacks, \(stack) stack$internals)
+  internals <- lapply(stacks, \(stack) stack$internal)
   imports <- lapply(stacks, \(stack) stack$packages)
 
   content |>
@@ -82,7 +85,7 @@ add_dependencies <- function(content, internals, packages) {
   )
 }
 
-make_block <- function(workspace){
+make_block <- function(workspace, to_copy){
   lapply(workspace, \(stack) {
     stack <- get(stack, envir = workspace)
 
@@ -90,7 +93,7 @@ make_block <- function(workspace){
       code <- blockr::generate_code(block) |>
         deparse()
 
-      deps <- get_block_dependencies(block, code)
+      deps <- get_block_dependencies(block, code, to_copy)
 
       code <- paste0("```{r ", attr(block, "name"), "}\n", code, "\n```")
 
@@ -119,14 +122,15 @@ write_file <- function(
   file,
   writer,
   chunks = c("stack", "block"),
-  workspace = blockr::get_workspace()
+  workspace = blockr::get_workspace(),
+  to_copy = c()
 ){
   if(missing(writer)) stop("Missing `writer`")
   if(!is.function(writer)) stop("`writer` must be a function")
   if(missing(file)) stop("No file provided")
   chunks <- match.arg(chunks)
 
-  generated <- make_file(chunks, workspace)
+  generated <- make_file(chunks, workspace, to_copy)
 
   writer(generated, file)
 }
