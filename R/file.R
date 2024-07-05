@@ -39,7 +39,7 @@ make_stack <- function(workspace, to_copy){
         remove_to_copy_ns(to_copy) |>
         unlist()
 
-      code <- paste0(code, collapse = "\n")
+      code <- paste0(code, collapse = "\n") |> replace_data()
 
       title <- attr(stack, "title")
       code <- paste0("```{r ", attr(stack, "name"), "}\n", code, "\n```")
@@ -139,4 +139,10 @@ write_file <- function(
   generated <- make_file(chunks, workspace, to_copy)
 
   writer(generated, file)
+}
+
+replace_data <- function(code) {
+  code <- stringr::str_replace_all(code, "(?<=[\\s\\(\\[\\{=])data(?=[\\s\\)\\]\\}=])", ".")
+  code <- stringr::str_replace_all(code, " data ", " . ")
+  stringr::str_replace_all(code, " data,", " .,")
 }
