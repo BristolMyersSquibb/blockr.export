@@ -81,7 +81,7 @@ add_dependencies <- function(content, internals, packages) {
   }
 
   paste0(
-    "```{r packages}\n",
+    "```{r packages}\nlibrary(magrittr)\n",
     library,
     "\n```\n\n",
     "```{r internals}\n",
