@@ -9,9 +9,10 @@
 export_html <- function(
   file,
   chunks = c("stack", "block"),
-  workspace = blockr::get_workspace()
+  workspace = blockr::get_workspace(),
+  to_copy = c()
 ){
-  write_file(file, write_html, chunks, workspace)
+  write_file(file, write_html, chunks, workspace, to_copy)
 }
 
 write_html <- function(content, file) {

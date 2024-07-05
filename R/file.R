@@ -34,13 +34,18 @@ make_stack <- function(workspace, to_copy){
         block$code
       })
 
-      codes <- paste0(unlist(codes), collapse = "%>%\n\t")
-      code <- paste0("```{r ", attr(stack, "name"), "}\n", codes, "\n```")
+      code <- generate_code(stack) |>
+        deparse() |>
+        remove_to_copy_ns(to_copy) |>
+        unlist()
+
+      code <- paste0(code, collapse = "\n")
 
       title <- attr(stack, "title")
+      code <- paste0("```{r ", attr(stack, "name"), "}\n", code, "\n```")
 
       list(
-        content = paste0("## ", title, "\n\n", code),
+        content = code,
         internals = lapply(blocks, \(block) block$deps$internal),
         packages = lapply(blocks, \(block) block$deps$packages)
       )
