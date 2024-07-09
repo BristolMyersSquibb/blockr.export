@@ -44,8 +44,9 @@ get_block_dependencies <- function(
   # so we can library(<package>) in our code.
   if(length(to_copy)) {
     to_copy_deps <- get_package_deps(to_copy)
-    to_copy <- c(to_copy, to_copy_deps)
+    ext_packages <- c(ext_packages, to_copy_deps)
   }
+
   find_functions(fns, core_package, ext_packages, to_copy = to_copy)
 }
 
