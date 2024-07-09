@@ -5,6 +5,7 @@
 #' @param workspace The workspace to export
 #' @param chunks Whether code chunks represent entire stacks or individual blocks.
 #' @param file The file to export to
+#' @param to_copy A vector of package names to copy the functions from (if found).
 #' @export
 export_html <- function(
   file,

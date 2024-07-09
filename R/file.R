@@ -34,7 +34,7 @@ make_stack <- function(workspace, to_copy){
         block$code
       })
 
-      code <- generate_code(stack) |>
+      code <- blockr::generate_code(stack) |>
         deparse() |>
         remove_to_copy_ns(to_copy) |>
         unlist()

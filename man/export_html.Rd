@@ -7,7 +7,8 @@
 export_html(
   file,
   chunks = c("stack", "block"),
-  workspace = blockr::get_workspace()
+  workspace = blockr::get_workspace(),
+  to_copy = c()
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ export_html(
 \item{chunks}{Whether code chunks represent entire stacks or individual blocks.}
 
 \item{workspace}{The workspace to export}
+
+\item{to_copy}{A vector of package names to copy the functions from (if found).}
 }
 \description{
 Export a workspace to HTML via Rmarkdown.

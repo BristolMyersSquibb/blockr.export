@@ -38,13 +38,14 @@ make_gzip <- function(workspace, to_copy, out, style = FALSE){
         )
       })
 
-      codes <- sapply(blocks, \(block) {
-        block$code
-      })
+      code <- blockr::generate_code(stack) |>
+        deparse() |>
+        remove_to_copy_ns(to_copy) |>
+        unlist()
 
-      codes <- paste0(unlist(codes), collapse = "%>%\n\t")
+      code <- paste0(code, collapse = "\n") |> replace_data()
 
-      title <- attr(stack, "title")
+      code <- paste0("```{r ", attr(stack, "name"), "}\n", code, "\n```")
 
       internal <- sapply(blocks, \(block) block$deps$internal)
       packages <- sapply(blocks, \(block) block$deps$packages) |>

@@ -42,6 +42,10 @@ get_block_dependencies <- function(
   # in the list of dependencies we have found
   # if they are found we return the package where it comes from
   # so we can library(<package>) in our code.
+  if(length(to_copy)) {
+    to_copy_deps <- get_package_deps(to_copy)
+    to_copy <- c(to_copy, to_copy_deps)
+  }
   find_functions(fns, core_package, ext_packages, to_copy = to_copy)
 }
 
