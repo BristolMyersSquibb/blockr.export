@@ -4,28 +4,36 @@
 #'
 #' @param workspace The workspace to export
 #' @param file The file to export to
-#' @param copy_deps Whether to copy the source code of first level dependencies.
 #' @param to_copy A vector of package names to copy the functions from (if found).
 #' @export
 export_markdown <- function(
   file,
   workspace = blockr::get_workspace(),
-  copy_deps = FALSE,
   to_copy = c()
 ){
-  write_file(file, write_md(), workspace, to_copy)
+  f <- new_file(
+    workspace = workspace,
+    file = file,
+    class = "export_markdown"
+  )
+
+  err <- export(f)
+
+  if(is_error(err)){
+    cat("Error exporting file:", err$message, "\n")
+  }
+
+  return(f)
 }
 
-write_md <- function() {
-  \(content, file) {
-    content <- paste0(
-      "---\n",
-      "title: blockr\n",
-      "---\n\n",
-      "\n\n",
-      content
-    )
-
-    writeLines(content, file)
-  }
+#' @export
+front_matter.export_markdown <- function(x, ...) {
+  paste0(
+    "---\n",
+    sprintf(
+      "title: %s\n",
+      attr(x, "title")
+    ),
+    "---"
+  )
 }

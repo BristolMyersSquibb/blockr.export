@@ -16,9 +16,26 @@ remotes::install_github("blockr-org/blockr.export")
 
 ## Exports
 
-- Rmarkdown
-- Markdown
-- HTML
+Export to a file, use `export_rmarkdown_output` to render the 
+output with Rmarkdown.
+
+- Rmarkdown: `export_rmarkdown`
+- Rmarkdown Output: `export_rmarkdown_output`
+- Markdown: `export_markdown`
+
+## Extend
+
+Create a custom file with `new_file`, then, optionally,
+customise the methods.
+
+Methods:
+
+- `front_matter`: returns front matter
+- `content`: returns the content to write in the file.
+- `footer`: returns the footer to place at the bottom of the file.
+- `write`: write the file
+- `post_write`: callback to run after the file has been written
+- `render`: render the generated file, used with Rmarkdown
 
 ## Example
 
@@ -44,7 +61,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   output$download <- shiny::downloadHandler(
     filename = \(x){
-      "file.md"
+      "file.Rmd"
     },
     content = \(file){
       export_markdown(file)

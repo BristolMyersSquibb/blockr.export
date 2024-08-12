@@ -7,9 +7,9 @@
 export_rmarkdown(
   file,
   workspace = blockr::get_workspace(),
-  copy_deps = FALSE,
   to_copy = c(),
-  style = FALSE
+  style = FALSE,
+  output = "html_document"
 )
 }
 \arguments{
@@ -17,11 +17,11 @@ export_rmarkdown(
 
 \item{workspace}{The workspace to export}
 
-\item{copy_deps}{Whether to copy the source code of first level dependencies.}
-
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
 
 \item{style}{Whether to run \code{\link[styler:style_file]{styler::style_file()}} on the generated code.}
+
+\item{output}{Output file to use in the front matter.}
 }
 \description{
 Export a workspace to Rmarkdown.

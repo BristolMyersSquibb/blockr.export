@@ -4,19 +4,12 @@
 \alias{export_markdown}
 \title{Export to Markdown}
 \usage{
-export_markdown(
-  file,
-  workspace = blockr::get_workspace(),
-  copy_deps = FALSE,
-  to_copy = c()
-)
+export_markdown(file, workspace = blockr::get_workspace(), to_copy = c())
 }
 \arguments{
 \item{file}{The file to export to}
 
 \item{workspace}{The workspace to export}
-
-\item{copy_deps}{Whether to copy the source code of first level dependencies.}
 
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
 }

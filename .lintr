@@ -10,6 +10,7 @@ linters: linters_with_defaults(
       indent = 2L,
       hanging_indent_style = "never"
     ),
-    object_usage_linter = NULL # this uses eval()
+    object_usage_linter = NULL, # this uses eval()
+    object_name_linter = NULL
   )
 encoding: "UTF-8"
