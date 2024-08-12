@@ -4,12 +4,14 @@
 #'
 #' @param workspace The workspace to export
 #' @param file The file to export to
+#' @param copy_deps Whether to copy the source code of first level dependencies.
 #' @param to_copy A vector of package names to copy the functions from (if found).
 #' @param style Whether to run [styler::style_file()] on the generated code.
 #' @export
 export_gzip <- function(
   file,
   workspace = blockr::get_workspace(),
+  copy_deps = FALSE,
   to_copy = c(),
   style = FALSE
 ){
@@ -90,7 +92,7 @@ make_gzip <- function(workspace, to_copy, out, style = FALSE){
       if(!requireNamespace("styler", quietly = TRUE))
         cat("{styler} required when style = TRUE")
 
-      styler::style_file(path)
+      styler::style_dir(path)
     })
 
   utils::zip(out, files)

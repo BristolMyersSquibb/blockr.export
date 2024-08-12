@@ -6,19 +6,22 @@
 \usage{
 export_rmarkdown(
   file,
-  chunks = c("stack", "block"),
   workspace = blockr::get_workspace(),
-  to_copy = c()
+  copy_deps = FALSE,
+  to_copy = c(),
+  style = FALSE
 )
 }
 \arguments{
 \item{file}{The file to export to}
 
-\item{chunks}{Whether code chunks represent entire stacks or individual blocks.}
-
 \item{workspace}{The workspace to export}
 
+\item{copy_deps}{Whether to copy the source code of first level dependencies.}
+
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
+
+\item{style}{Whether to run \code{\link[styler:style_file]{styler::style_file()}} on the generated code.}
 }
 \description{
 Export a workspace to Rmarkdown.
