@@ -154,6 +154,5 @@ post_write.export_rmarkdown_output <- function(x, ...) {
 
 #' @export
 render.export_rmarkdown_output <- function(x, ...) {
-  print(readLines(attr(x, "file")))
   rmarkdown::render(attr(x, "file"), output_file = attr(x, "output_file"))
 }
