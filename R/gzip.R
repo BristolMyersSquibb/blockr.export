@@ -44,8 +44,7 @@ make_gzip <- function(workspace, to_copy, out, style = FALSE){
         unlist()
 
       code <- paste0(code, collapse = "\n") |> replace_data()
-
-      code <- paste0("```{r ", attr(stack, "name"), "}\n", code, "\n```")
+      code <- paste0("# ", attr(stack, "name"), "\n", code)
 
       internal <- sapply(blocks, \(block) block$deps$internal)
       packages <- sapply(blocks, \(block) block$deps$packages) |>
@@ -68,19 +67,19 @@ make_gzip <- function(workspace, to_copy, out, style = FALSE){
       internal <- paste0(internal, collapse = "\n")
       packages <- paste0(packages, collapse = "\n")
 
-      codes <- paste(
+      code <- paste(
         "# Packages\n",
         packages,
         "\n\n",
         "# Functions copied\n",
         internal,
         "\n\n",
-        codes,
+        code,
         collapse = "\n\n"
       )
 
       writeLines(
-        codes,
+        code,
         path
       )
 

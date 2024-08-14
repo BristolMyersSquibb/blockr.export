@@ -3,3 +3,6 @@ check: document
 
 document:
 	R -s -e "devtools::document()"
+
+install: check
+	R -s -e "devtools::install()"
