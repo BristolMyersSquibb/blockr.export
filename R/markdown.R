@@ -14,6 +14,7 @@ export_markdown <- function(
   f <- new_file(
     workspace = workspace,
     file = file,
+    to_copy = to_copy,
     class = "export_markdown"
   )
 

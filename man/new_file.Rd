@@ -9,6 +9,7 @@ new_file(
   ...,
   title = "Blockr workspace",
   workspace = blockr::get_workspace(),
+  to_copy = c(),
   class
 )
 }
@@ -20,6 +21,8 @@ new_file(
 \item{title}{Title of the file.}
 
 \item{workspace}{Blockr workspace as returned by \code{\link[blockr:set_workspace]{blockr::get_workspace()}}.}
+
+\item{to_copy}{A vector of package names to copy the functions from (if found).}
 
 \item{class}{Class of the new file.}
 }

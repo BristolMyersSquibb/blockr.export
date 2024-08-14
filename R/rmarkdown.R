@@ -20,6 +20,7 @@ export_rmarkdown <- function(
     file = file,
     style = style,
     output = output,
+    to_copy = to_copy,
     class = "export_rmarkdown"
   )
 
@@ -94,6 +95,7 @@ export_rmarkdown_output <- function(
     style = style,
     output = output,
     output_file = file,
+    to_copy = to_copy,
     class = "export_rmarkdown_output"
   )
 

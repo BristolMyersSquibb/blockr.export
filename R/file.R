@@ -6,12 +6,20 @@
 #' @param title Title of the file.
 #' @param workspace Blockr workspace as returned by [blockr::get_workspace()].
 #' @param ... Any additional attribute.
+#' @param to_copy A vector of package names to copy the functions from (if found).
 #' @param class Class of the new file.
 #' 
 #' @name new_file
 #' 
 #' @export
-new_file <- function(file, ..., title = "Blockr workspace", workspace = blockr::get_workspace(), class){
+new_file <- function(
+  file, 
+  ..., 
+  title = "Blockr workspace", 
+  workspace = blockr::get_workspace(),
+  to_copy = c(),
+  class
+){
   stopifnot(!missing(file), !missing(class))
 
   structure(
