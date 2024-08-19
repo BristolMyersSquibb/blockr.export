@@ -18,7 +18,11 @@ code.block <- function(x, ...) {
 code.markdown_block <- function(x, ...) {
   prog <- blockr::generate_code(x)
   output <- eval(prog)
-  as.character(output$original)
+
+  if(length(output$original))
+    return(output$original)
+
+  return(output$text)
 }
 
 safe_code <- function(x, ...) {
