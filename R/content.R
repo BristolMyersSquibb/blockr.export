@@ -28,9 +28,9 @@ generate_content <- function(x, ...){
       stack <- get(stack, envir = attr(x, "workspace"))
 
       blocks <- lapply(stack, \(block) {
-        code <- blockr::generate_code(block) |>
-          deparse() |>
-          remove_to_copy_ns(attr(x, "to_copy"))
+        code <- safe_code(block) |>
+          remove_to_copy_ns(attr(x, "to_copy")) |>
+          replace_data()
 
         deps <- get_block_dependencies(block, code, attr(x, "to_copy"))
 
@@ -40,21 +40,15 @@ generate_content <- function(x, ...){
         )
       })
 
-      codes <- sapply(blocks, \(block) {
+      code <- sapply(blocks, \(block) {
         block$code
-      })
+      }) |>
+        paste0(collapse = "%>%\n")
 
-      code <- blockr::generate_code(stack) |>
-        deparse() |>
-        remove_to_copy_ns(attr(x, "to_copy")) |>
-        unlist()
-
-      code <- paste0(code, collapse = "\n") |> replace_data()
-
-      title <- attr(stack, "title")
-      code <- paste0("```{r ", attr(stack, "name"), "}\n", code, "\n```")
+      code <- code_fence(stack, attr(stack, "name"), code)
 
       list(
+        title = attr(stack, "title"),
         content = code,
         internals = lapply(blocks, \(block) block$deps$internal),
         packages = lapply(blocks, \(block) block$deps$packages)

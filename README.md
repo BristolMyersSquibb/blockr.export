@@ -36,6 +36,8 @@ Methods:
 - `write`: write the file
 - `post_write`: callback to run after the file has been written
 - `render`: render the generated file, used with Rmarkdown
+- `code`: Method on blockr block to extract code.
+- `code_fence`: Method on stack to generate code fence.
 
 ## Example
 
