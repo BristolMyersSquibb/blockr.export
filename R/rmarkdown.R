@@ -7,12 +7,14 @@
 #' @param to_copy A vector of package names to copy the functions from (if found).
 #' @param style Whether to run [styler::style_file()] on the generated code.
 #' @param output Output file to use in the front matter.
+#' @param ... Passed to [new_file()]
 #' @export
 export_rmarkdown <- function(
   file,
   workspace = blockr::get_workspace(),
   to_copy = c(),
   style = FALSE,
+  ...,
   output = "html_document"
 ){
   f <- new_file(
@@ -21,6 +23,7 @@ export_rmarkdown <- function(
     style = style,
     output = output,
     to_copy = to_copy,
+    ...,
     class = "export_rmarkdown"
   )
 
@@ -84,6 +87,7 @@ export_rmarkdown_output <- function(
   workspace = blockr::get_workspace(),
   to_copy = c(),
   style = FALSE,
+  ...,
   output = " html_document"
 ){
   tmp <- tempfile(fileext = ".Rmd")
@@ -96,6 +100,7 @@ export_rmarkdown_output <- function(
     output = output,
     output_file = file,
     to_copy = to_copy,
+    ...,
     class = "export_rmarkdown_output"
   )
 

@@ -4,7 +4,7 @@
 \alias{export_markdown}
 \title{Export to Markdown}
 \usage{
-export_markdown(file, workspace = blockr::get_workspace(), to_copy = c())
+export_markdown(file, workspace = blockr::get_workspace(), to_copy = c(), ...)
 }
 \arguments{
 \item{file}{The file to export to}
@@ -12,6 +12,8 @@ export_markdown(file, workspace = blockr::get_workspace(), to_copy = c())
 \item{workspace}{The workspace to export}
 
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
+
+\item{...}{Passed to \code{\link[=new_file]{new_file()}}}
 }
 \description{
 Export a workspace to markdown.

@@ -4,10 +4,12 @@
 \alias{code}
 \title{Code}
 \usage{
-code(x, ...)
+code(x, file, ...)
 }
 \arguments{
 \item{x}{Block object.}
+
+\item{file}{File (\link{new_file}) to use for context.}
 
 \item{...}{Ignored.}
 }

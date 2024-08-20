@@ -22,20 +22,26 @@ safe_content <- function(x, ...) {
 }
 
 generate_content <- function(x, ...){
-  stacks <- attr(x, "workspace") |>
-    ls() |>
+  stacks <- attr(x, "workspace") |> ls()
+
+  o <- attr(x, "order")
+
+  if(!is.null(o))
+    stacks <- stacks[order(o)]
+
+  stacks <- stacks |> 
     lapply(\(stack) {
       stack <- get(stack, envir = attr(x, "workspace"))
 
       blocks <- lapply(stack, \(block) {
-        code <- safe_code(block) |>
+        code <- safe_code(block, x) |>
           remove_to_copy_ns(attr(x, "to_copy")) |>
           replace_data()
 
         deps <- get_block_dependencies(block, code, attr(x, "to_copy"))
 
         list(
-          code = code,
+          code = paste0(code, collapse = "\n"),
           deps = deps
         )
       })

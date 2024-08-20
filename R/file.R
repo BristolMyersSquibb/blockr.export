@@ -8,6 +8,7 @@
 #' @param ... Any additional attribute.
 #' @param to_copy A vector of package names to copy the functions from (if found).
 #' @param class Class of the new file.
+#' @param order Vector of stack ids defining order in which they should be rendered.
 #' 
 #' @name new_file
 #' 
@@ -18,6 +19,7 @@ new_file <- function(
   title = "Blockr workspace", 
   workspace = blockr::get_workspace(),
   to_copy = c(),
+  order = NULL,
   class
 ){
   stopifnot(!missing(file), !missing(class))
@@ -30,6 +32,7 @@ new_file <- function(
     to_copy = c(),
     content = c(),
     title = title,
+    order = order,
     ...,
     class = c(class, "export_file")
   )

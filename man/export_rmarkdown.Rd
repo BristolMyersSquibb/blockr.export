@@ -9,6 +9,7 @@ export_rmarkdown(
   workspace = blockr::get_workspace(),
   to_copy = c(),
   style = FALSE,
+  ...,
   output = "html_document"
 )
 }
@@ -20,6 +21,8 @@ export_rmarkdown(
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
 
 \item{style}{Whether to run \code{\link[styler:style_file]{styler::style_file()}} on the generated code.}
+
+\item{...}{Passed to \code{\link[=new_file]{new_file()}}}
 
 \item{output}{Output file to use in the front matter.}
 }

@@ -10,6 +10,7 @@ new_file(
   title = "Blockr workspace",
   workspace = blockr::get_workspace(),
   to_copy = c(),
+  order = NULL,
   class
 )
 }
@@ -23,6 +24,8 @@ new_file(
 \item{workspace}{Blockr workspace as returned by \code{\link[blockr:set_workspace]{blockr::get_workspace()}}.}
 
 \item{to_copy}{A vector of package names to copy the functions from (if found).}
+
+\item{order}{Vector of stack ids defining order in which they should be rendered.}
 
 \item{class}{Class of the new file.}
 }
