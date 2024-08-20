@@ -4,10 +4,12 @@
 \alias{code_fence}
 \title{Code Fence}
 \usage{
-code_fence(x, name, code, ...)
+code_fence(x, file, name, code, ...)
 }
 \arguments{
 \item{x}{Stack object.}
+
+\item{file}{File (\link{new_file}) to use for context.}
 
 \item{name}{Name of the stack.}
 

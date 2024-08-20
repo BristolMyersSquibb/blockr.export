@@ -42,13 +42,15 @@ safe_code <- function(x, file, ...) {
 #' @param x Stack object.
 #' @param name Name of the stack.
 #' @param code Code generated for the stack.
+#' @param file File ([new_file]) to use for context.
 #' @param ... Ignored.
 #' 
 #' @export
-code_fence <- function(x, name, code, ...) UseMethod("code_fence")
+code_fence <- function(x, file, name, code, ...) UseMethod("code_fence")
 
 #' @export
-code_fence.stack <- function(x, name, code, ...) {
+code_fence.stack <- function(x, file, name, code, ...) {
+  echo <- !inherits(file, "export_rmarkdown_output")
   has_md <- stack_has_markdown_block(x)
   if(has_md) {
     return(code)
@@ -57,14 +59,14 @@ code_fence.stack <- function(x, name, code, ...) {
   ends_rtables <- stack_ends_rtables_block(x)
   if (ends_rtables) {
     return(paste0(
-      "```{r ", name, "}\nout <-", code, 
+      "```{r ", name, ", warning=FALSE, message=FALSE, echo=", echo, "}\nout <-", code, 
       "\nif(length(out$gt)) {out$gt",
-      "\n}else if(length(out$rtables)) {rtables::tt_to_flextable(out$rtables)}",
+      "\n}else if(length(out$rtables)) {flextable::autofit(rtables::tt_to_flextable(out$rtables))}",
       "\n```")
     )
   }
 
-  return(paste0("```{r ", name, "}\n", code, "\n```"))
+  return(paste0("```{r ", name, ", warning=FALSE, message=FALSE, echo=", echo, "}\n", code, "\n```"))
 }
 
 safe_code_fence <- function(x, ...) {

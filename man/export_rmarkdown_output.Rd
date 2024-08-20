@@ -10,7 +10,7 @@ export_rmarkdown_output(
   to_copy = c(),
   style = FALSE,
   ...,
-  output = " html_document"
+  output = "html_document"
 )
 }
 \arguments{

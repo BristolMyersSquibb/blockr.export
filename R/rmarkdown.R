@@ -88,7 +88,7 @@ export_rmarkdown_output <- function(
   to_copy = c(),
   style = FALSE,
   ...,
-  output = " html_document"
+  output = "html_document"
 ){
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp))
@@ -161,5 +161,13 @@ post_write.export_rmarkdown_output <- function(x, ...) {
 
 #' @export
 render.export_rmarkdown_output <- function(x, ...) {
-  rmarkdown::render(attr(x, "file"), output_file = attr(x, "output_file"))
+  rmarkdown::render(
+    attr(x, "file"),
+    output_file = attr(x, "output_file"),
+    output_options = list(
+      self_contained = TRUE,
+      toc = TRUE,
+      toc_depth = 2L
+    )
+  )
 }

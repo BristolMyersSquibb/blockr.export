@@ -51,7 +51,14 @@ generate_content <- function(x, ...){
       }) |>
         paste0(collapse = "%>%\n")
 
-      code <- code_fence(stack, attr(stack, "name"), code)
+      code <- code_fence(stack, x, attr(stack, "name"), code)
+
+      if(!stack_has_markdown_block(stack))
+        code <- paste0(
+          "\n## ", attr(stack, "title"),
+          "\n\n",
+          code
+        )
 
       list(
         title = attr(stack, "title"),
@@ -68,11 +75,12 @@ generate_content <- function(x, ...){
   imports <- lapply(stacks, \(stack) stack$packages)
 
   content |>
-    add_dependencies(internals, imports)
+    add_dependencies(internals, imports, x)
 }
 
 # adds dependencies to a file.
-add_dependencies <- function(content, internals, packages) {
+add_dependencies <- function(content, internals, packages, file) {
+  echo <- !inherits(file, "export_rmarkdown_output")
   internals <- unlist(internals)
   internals <- paste0(internals, collapse = "\n")
 
@@ -91,7 +99,7 @@ add_dependencies <- function(content, internals, packages) {
   }
 
   output <- paste0(
-    "```{r packages}\nlibrary(magrittr)\n",
+    "```{r packages, message=FALSE, echo=", echo, "}\nlibrary(magrittr)\n",
     library,
     "\n```\n\n"
   )
@@ -99,7 +107,7 @@ add_dependencies <- function(content, internals, packages) {
   if(length(internals)) {
     output <- paste0(
       output,
-      "```{r internals}\n",
+      "```{r internals, message=FALSE, echo=", echo, "}\n",
       internals,
       "\n```\n\n"
     )
