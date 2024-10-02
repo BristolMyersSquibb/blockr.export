@@ -119,8 +119,11 @@ add_dependencies <- function(content, internals, packages, file) {
   )
 }
 
+# this is really ugly, it should be done blockr-side with bquote?
 replace_data <- function(code) {
-  code <- stringr::str_replace_all(code, "(?<=[\\s\\(\\[\\{=])data(?=[\\s\\)\\]\\}=])", ".")
-  code <- stringr::str_replace_all(code, " data ", " . ")
-  stringr::str_replace_all(code, " data,", " .,")
+  code |>
+    stringr::str_replace_all("(?<=[\\s\\(\\[\\{=])data(?=[\\s\\)\\]\\}=])", ".") |>
+    stringr::str_replace_all(" data ", " . ") |>
+    stringr::str_replace_all(" data,", " .,") |>
+    stringr::str_replace_all("\\(data,", "(.,")
 }
