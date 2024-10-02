@@ -66,7 +66,14 @@ code_fence.stack <- function(x, file, name, code, ...) {
     )
   }
 
-  return(paste0("```{r ", name, ", warning=FALSE, message=FALSE, echo=", echo, "}\n", code, "\n```"))
+  extra <- ""
+  has_table <- stack_has_composer_block(x)
+  if(has_table) {
+    code <- paste0(code, "%>% {composer::generate_table(.)$formatted_table}")
+    extra <- ", results='asis'"
+  }
+
+  return(paste0("```{r ", name, ", warning=FALSE, message=FALSE, echo=", echo, extra, "}\n", code, "\n```"))
 }
 
 safe_code_fence <- function(x, ...) {
@@ -87,6 +94,16 @@ stack_ends_rtables_block <- function(stack) {
 stack_has_markdown_block <- function(stack) {
   for (block in stack) {
     if(inherits(block, "markdown_block")) {
+      return(TRUE)
+    }
+  }
+
+  return(FALSE)
+}
+
+stack_has_composer_block <- function(stack) {
+  for (block in stack) {
+    if(inherits(block, "table_block")) {
       return(TRUE)
     }
   }
