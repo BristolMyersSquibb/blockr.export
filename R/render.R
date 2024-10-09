@@ -16,7 +16,7 @@ safe_render <- function(x, ...) {
   ok <- safe_eval(render(x, ...))
 
   if(is_error(ok)) return(ok)
-  warn_if(ok)
 
+  warn_if(ok)
   invisible(ok)
 }

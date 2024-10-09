@@ -78,6 +78,11 @@ make_gzip <- function(workspace, to_copy, out, style = FALSE){
         collapse = "\n\n"
       )
 
+      comment <- attr(stack, "comment")
+      if(length(comment)) {
+        code <- paste0(comment, "\n\n", code)
+      }
+
       writeLines(
         code,
         path
