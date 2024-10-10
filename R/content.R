@@ -125,5 +125,7 @@ replace_data <- function(code) {
     stringr::str_replace_all("(?<=[\\s\\(\\[\\{=])data(?=[\\s\\)\\]\\}=])", ".") |>
     stringr::str_replace_all(" data ", " . ") |>
     stringr::str_replace_all(" data,", " .,") |>
-    stringr::str_replace_all("\\(data,", "(.,")
+    stringr::str_replace_all("\\(data,", "(.,") |>
+    stringr::str_replace_all("data\\[\\[", ".[[") |>
+    stringr::str_replace_all("data <- ", ". <- ")
 }
